@@ -14,7 +14,7 @@ just run `btc` , prices board will show
 ````
 $ btc 
 ````
-#### Command Line Interface Shotcuts
+#### Shortcuts
 btc cli provides some useful shotcuts for you:
 ````
 [enter]  ->  refresh prices as you wish
