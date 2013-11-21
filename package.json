@@ -27,6 +27,7 @@
     "async": "*",
     "underscore": "*",
     "consoler": "*",
-    "colors": "*"
+    "colors": "*",
+    "moment": "*"
   }
 }
