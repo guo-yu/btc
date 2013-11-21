@@ -1,6 +1,6 @@
 ## ![logo](http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg) btc ![npm](https://badge.fury.io/js/btc.png)
 
-a btcchina client app
+a bitcoin price watcher for geeks
 
 ### Installation
 ````
@@ -10,17 +10,19 @@ $ npm install btc
 ### Command Line Interface
 ````
 $ [sudo] npm install btc -g
-$ btc // menu will show
+$ btc // prices board will show
 ````
 
 ### Example
 ````javascript
 var btc = require('btc');
 
+// fetch a prices list
 btc.price(function(err, prices){
     console.log(prices);
 });
 
+// fetch a seleced exchanger
 btc.price('btcchina', function(err, prices){
     console.log(prices);
 });
@@ -28,6 +30,9 @@ btc.price('btcchina', function(err, prices){
 
 ### API
 check this file: `index.js`
+
+btc supports exchanges below:
+
 - [btcchina](https://www.btcchina.com/): the bitcoin largest exchanger in China
 - [mtgox](https://www.mtgox.com/)
 - [bitstamp](https://www.bitstamp.net/)
