@@ -54,6 +54,11 @@ var wash = function(k, v) {
             stat: v.ticker ? 'ok' : 'error',
             last: '¥ ' + v.ticker.last
         }
+    } else if (k == 'btce') {
+        return {
+            stat: v.ticker && v.ticker.last ? 'ok' : 'error',
+            last: '$ ' + v.ticker.last
+        }
     }
     return v;
 };

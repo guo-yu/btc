@@ -27,6 +27,9 @@ module.exports = new sdk({
     },
     btc100: {
         url: 'http://www.btc123.com/e/interfaces/tickers.php?type=btc100Ticker&suffix=0.16103304247371852'
+    },
+    btce: {
+        url: 'https://btc-e.com/api/2/btc_usd/ticker'
     }
 },{
     server: ''
