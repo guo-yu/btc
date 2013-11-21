@@ -19,7 +19,8 @@ btc cli provides some useful shotcuts for you:
 ````
 [enter]  ->  refresh prices as you wish
 [g]      ->  go to current exchange market
-[a]      ->  autorefresh the current exchange market every 10 seconds, press [a] to cancel or [enter] to cancel all
+[a]      ->  autorefresh the current exchange market every 10 seconds, 
+             press [a] to cancel or [enter] to cancel all
 ````
 
 ### Example
