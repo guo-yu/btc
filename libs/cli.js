@@ -131,6 +131,12 @@ module.exports = function() {
         case 'g':
             exec('open ' + item);
             break;
+        case 'j':
+            menu.down();
+            break;
+        case 'k':
+            menu.up();
+            break;
         }
     });
     menu.on('empty', function() {
