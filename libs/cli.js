@@ -3,20 +3,19 @@ var List = require('term-list'),
     async = require('async'),
     _ = require('underscore'),
     consoler = require('consoler'),
-    colors = require('colors');
+    colors = require('colors'),
+    sdk = require('./sdk');
 
 var wash = function(k, v) {
     if (k == 'btcchina') {
-        var last = _.last(v[0]);
+        var last = _.last(v);
         return {
             timestamp: last[0],
-            last: 'RMB: ' + last[1],
-            url: "https://www.btcchina.com/"
+            last: 'RMB: ' + last[1]
         }
     } else if (k == 'bitstamp') {
-        var data = v[0];
+        var data = v;
         data.last = '$: ' + data.last;
-        data.url = 'https://www.bitstamp.net/';
         return data;
     } else {
         return v;
@@ -35,18 +34,28 @@ module.exports = function() {
         maker: '\033[36m› \033[0m',
         markerLength: 2
     });
+    menu._update = function(index, label) {
+        this.at(index).label = this.exchangers[index].name + ' ' + label;
+        this.draw();
+    }
+    menu.exchangers = bitcoin.exchangers(sdk);
+    consoler.loading('loading bitcoin prices...');
+    _.each(menu.exchangers, function(item, index){
+        menu.add(item.url, item.name + colors.yellow(' loading...'));
+        bitcoin.price(item.name, function(err, result){
+            if (!err) {
+                var data = wash(item.name, result);
+                menu._update(index, label(item.name, data));
+            } else {
+                menu._update(index, colors.red('request fail'));
+            }
+        });
+    });
+    menu.start();
     menu.on('keypress', function(key, item) {
-        console.log(item);
+        console.log(item.url);
     });
     menu.on('empty', function() {
         menu.stop();
-    });
-    consoler.loading('loading bitcoin prices')
-    bitcoin.price(function(err, results) {
-        _.each(results, function(v, k) {
-            var result = wash(k, v);
-            menu.add(result, label(k, result));
-        });
-        menu.start();
     });
 }

@@ -2,10 +2,20 @@ var sdk = require('./sdk'),
     async = require('async'),
     _ = require('underscore');
 
-exports.washer = function() {
+var urlMap = {
+    btcchina: 'https://www.btcchina.com/',
+    bitstamp: 'https://www.bitstamp.net/'
+};
+
+exports.exchangers = function(sdk) {
     var list = [];
     _.each(sdk, function(value, k) {
-        if (k !== 'router' && k !== 'parent') list.push(k);
+        if (k !== 'router' && k !== 'parent') {
+            list.push({
+                name: k,
+                url: urlMap[k]
+            });
+        }
     });
     return list;
 }
@@ -13,11 +23,11 @@ exports.washer = function() {
 exports.prices = function(callback) {
     var results = {};
     var fetch = function(target, cb) {
-        if (sdk[target]) {
-            sdk[target]({}, function(err, result) {
+        if (sdk[target.name]) {
+            sdk[target.name]({}, function(err, result) {
                 if (!err) {
-                    results[target] = [];
-                    if (result.stat == 200) results[target].push(result.body);
+                    results[target.name] = [];
+                    if (result.stat == 200) results[target.name].push(result.body);
                     cb(null)
                 } else {
                     cb(err);
@@ -27,7 +37,7 @@ exports.prices = function(callback) {
             cb(null);
         }
     };
-    async.each(exports.washer(), fetch, function(err) {
+    async.each(exports.exchangers(sdk), fetch, function(err) {
         callback(err, results);
     });
 }
