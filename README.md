@@ -1,21 +1,36 @@
 ## ![logo](http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg) btc ![npm](https://badge.fury.io/js/btc.png)
 
-a btcchina client app by [turing &lt;o.u.turing@gmail.com&gt;](https://npmjs.org/~turing &lt;o.u.turing@gmail.com&gt;) 
+a btcchina client app
 
 ### Installation
 ````
 $ npm install btc
-// or install globally
-$ sudo npm install btc -g
+````
+
+### Command Line Interface
+````
+$ [sudo] npm install btc -g
+$ btc // menu will show
 ````
 
 ### Example
 ````javascript
 var btc = require('btc');
+
+btc.price(function(err, prices){
+    console.log(prices);
+});
+
+btc.price('btcchina', function(err, prices){
+    console.log(prices);
+});
 ````
 
 ### API
 check this file: `index.js`
+- [btcchina](https://www.btcchina.com/): the bitcoin largest exchanger in China
+- [mtgox](https://www.mtgox.com/)
+- [bitstamp](https://www.bitstamp.net/)
 
 ### Contributing
 - Fork this repo

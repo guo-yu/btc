@@ -1,12 +1,13 @@
 {
   "name": "btc",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "a btcchina client app",
   "logo": "http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": "./bin/cli",
   "repository": {
     "type": "git",
     "url": "https://github.com/turingou/btc.git"
@@ -19,5 +20,13 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/turingou/btc/issues"
+  },
+  "dependencies": {
+    "term-list": "*",
+    "sdk": "*",
+    "async": "*",
+    "underscore": "*",
+    "consoler": "*",
+    "colors": "*"
   }
 }
