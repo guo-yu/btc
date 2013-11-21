@@ -71,23 +71,26 @@ var label = function(key, data) {
     return str;
 }
 
+var price = function(menu, item, index, autorefresh) {
+    bitcoin.price(autorefresh ? false : item.name, function(err, result) {
+        if (!err) {
+            var data = wash(item.name, autorefresh ? result[item.name][0] : result), l;
+            if (data) {
+                l = label(item.name, data);
+            } else {
+                l = colors.red(' request fail');
+            }
+            menu._update(index, l);
+        } else {
+            menu._update(index, colors.red(' request fail'));
+        }
+    });
+}
+
 var update = function(menu, within) {
     _.each(menu.exchangers, function(item, index) {
         within(item, index);
-        bitcoin.price(item.name, function(err, result) {
-            if (!err) {
-                var data = wash(item.name, result),
-                    l;
-                if (data) {
-                    l = label(item.name, data);
-                } else {
-                    l = colors.red(' request fail');
-                }
-                menu._update(index, l);
-            } else {
-                menu._update(index, colors.red(' request fail'));
-            }
-        });
+        price(menu, item, index);
     });
 }
 
@@ -106,7 +109,7 @@ var align = function(s, max) {
 
 var init = function(menu) {
     update(menu, function(item) {
-        menu.add(item.url, align(item.name, 12) + colors.yellow(' loading...'));
+        menu.add(item.url, align(item.name, 13) + colors.yellow(' loading...'));
     });
     menu.start();
 }
@@ -117,17 +120,48 @@ module.exports = function() {
         markerLength: 2
     });
     menu._update = function(index, label) {
-        this.at(index).label = align(this.exchangers[index].name, 12) + label;
+        var exchanger = this.exchangers[index];
+        var prefix = exchanger.autorefresh ? '[a]' : '';
+        this.at(index).label = align(prefix + exchanger.name, 13) + label;
         this.draw();
     };
     menu.exchangers = bitcoin.exchangers(sdk);
     menu.on('keypress', function(key, item) {
         if (key.name == 'return') {
+            // Clear all autorefreshes
+            _.each(menu.exchangers, function(item, index) {
+                item.autorefresh = false;
+                if (item.refreshInterval) {
+                    clearInterval(item.refreshInterval);
+                    delete item.refreshInterval;
+                }
+            });
+
             update(menu, function(item, index) {
                 menu._update(index, colors.yellow('updating...'))
             });
         } else if (key.name == 'g') {
             exec('open ' + item);
+        } else if (key.name == 'a') {
+            _.each(menu.items, function(item, index) {
+                if (item.id === menu.selected) {
+                    var exchanger = menu.exchangers[index];
+                    var refresh = function() {
+                        menu._update(index, colors.yellow('updating...'))
+                        price(menu, exchanger, index, true);
+                    }
+
+                    refresh();
+                    if (exchanger.autorefresh) {
+                        clearInterval(exchanger.refreshInterval);
+                        delete exchanger.refreshInterval;
+                    } else {
+                        exchanger.refreshInterval = setInterval(refresh, 10000);
+                    }
+                    exchanger.autorefresh = !exchanger.autorefresh;
+                }
+            });
+            menu.draw();
         }
     });
     menu.on('empty', function() {
