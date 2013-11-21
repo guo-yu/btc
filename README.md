@@ -19,6 +19,8 @@ btc cli provides some useful shotcuts for you:
 ````
 [enter]  ->  refresh prices as you wish
 [g]      ->  go to current exchange market
+[j]      ->  move down the list
+[k]      ->  move up the list
 ````
 
 ### Example
