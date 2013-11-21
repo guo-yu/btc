@@ -2,6 +2,8 @@
 
 a bitcoin price watcher for geeks
 
+![screenshot](http://ww3.sinaimg.cn/large/61ff0de3gw1easzjzw8d6j20hn0ar74z.jpg)
+
 ### Installation
 ````
 $ [sudo] npm install btc -g
