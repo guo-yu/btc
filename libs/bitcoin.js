@@ -4,7 +4,14 @@ var sdk = require('./sdk'),
 
 var urlMap = {
     btcchina: 'https://www.btcchina.com/',
-    bitstamp: 'https://www.bitstamp.net/'
+    bitstamp: 'https://www.bitstamp.net/',
+    okcoin: 'https://www.okcoin.com/',
+    fxbtc: 'http://www.fxbtc.com/',
+    btctrade: 'http://www.btctrade.com/',
+    mtgox: 'https://mtgox.com/',
+    chbtc: 'https://www.chbtc.com/',
+    futures796: 'http://bitcoinwisdom.com/markets/796/futures',
+    btc100: 'https://btc100.org/'
 };
 
 exports.exchangers = function(sdk) {

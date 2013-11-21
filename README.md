@@ -4,13 +4,19 @@ a bitcoin price watcher for geeks
 
 ### Installation
 ````
-$ npm install btc
+$ [sudo] npm install btc -g
 ````
 
 ### Command Line Interface
+just run `btc` , prices board will show
 ````
-$ [sudo] npm install btc -g
-$ btc // prices board will show
+$ btc 
+````
+#### Command Line Interface Shotcuts
+btc cli provides some useful shotcuts for you:
+````
+[enter]  ->  refresh prices as you wish
+[g]      ->  go to current exchange market
 ````
 
 ### Example
