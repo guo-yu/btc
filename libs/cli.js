@@ -122,12 +122,15 @@ module.exports = function() {
     };
     menu.exchangers = bitcoin.exchangers(sdk);
     menu.on('keypress', function(key, item) {
-        if (key.name == 'return') {
+        switch (key.name) {
+        case 'return':
             update(menu, function(item, index) {
                 menu._update(index, colors.yellow('updating...'))
             });
-        } else if (key.name == 'g') {
+            break;
+        case 'g':
             exec('open ' + item);
+            break;
         }
     });
     menu.on('empty', function() {
