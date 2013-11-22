@@ -1,32 +1,6 @@
-var sdk = require('./sdk'),
-    async = require('async'),
-    _ = require('underscore');
-
-var urlMap = {
-    btcchina: 'https://www.btcchina.com/',
-    bitstamp: 'https://www.bitstamp.net/',
-    okcoin: 'https://www.okcoin.com/',
-    fxbtc: 'http://www.fxbtc.com/',
-    btctrade: 'http://www.btctrade.com/',
-    mtgox: 'https://mtgox.com/',
-    chbtc: 'https://www.chbtc.com/',
-    futures796: 'http://bitcoinwisdom.com/markets/796/futures',
-    btc100: 'https://btc100.org/',
-    btce: 'https://btc-e.com/'
-};
-
-exports.exchangers = function(sdk) {
-    var list = [];
-    _.each(sdk, function(value, k) {
-        if (k !== 'router' && k !== 'parent') {
-            list.push({
-                name: k,
-                url: urlMap[k]
-            });
-        }
-    });
-    return list;
-}
+var async = require('async'),
+    sdk = require('./sdk'),
+    exchangers = require('./exchangers');
 
 exports.prices = function(callback) {
     var results = {};
@@ -36,16 +10,16 @@ exports.prices = function(callback) {
                 if (!err) {
                     results[target.name] = [];
                     if (result.stat == 200) results[target.name].push(result.body);
-                    cb(null)
+                    cb(null);
                 } else {
                     cb(err);
                 }
-            })
+            });
         } else {
             cb(null);
         }
     };
-    async.each(exports.exchangers(sdk), fetch, function(err) {
+    async.each(exchangers.list(), fetch, function(err) {
         callback(err, results);
     });
 }
@@ -63,7 +37,7 @@ exports.price = function(target, callback) {
                 }
             })
         } else {
-            callback(new Error('target not found'))
+            callback(new Error('exchangers not found'))
         }
     } else {
         exports.prices(callback);
