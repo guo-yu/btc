@@ -11,7 +11,8 @@ var urlMap = {
     mtgox: 'https://mtgox.com/',
     chbtc: 'https://www.chbtc.com/',
     futures796: 'http://bitcoinwisdom.com/markets/796/futures',
-    btc100: 'https://btc100.org/'
+    btc100: 'https://btc100.org/',
+    btce: 'https://btc-e.com/'
 };
 
 exports.exchangers = function(sdk) {
