@@ -1,176 +1,179 @@
-var List = require('term-list'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     async = require('async'),
-    consoler = require('consoler'),
     colors = require('colors'),
     moment = require('moment'),
+    List = require('term-list'),
+    consoler = require('consoler'),
+    exec = require('child_process').exec,
     sdk = require('./sdk'),
     bitcoin = require('./bitcoin'),
-    exec = require('child_process').exec;
+    exchangers = require('./exchangers');
 
 var wash = function(k, v) {
+    var result = v;
+    result.currency = exchangers.map[k].currency;
     if (k == 'btcchina') {
-        return {
-            stat: v.ticker && v.ticker.last ? 'ok' : 'error',
-            last: v.ticker ? '¥ ' + v.ticker.last : 'data error'
-        };
+        result.stat = v.ticker && v.ticker.last ? 'ok' : 'error';
+        result.last = v.ticker ? v.ticker.last : 'data error';
     } else if (k == 'bitstamp') {
-        return {
-            stat: v.last ? 'ok' : 'error',
-            last: '$ ' + v.last
-        };
+        result.stat = v.last ? 'ok' : 'error';
+        result.last = v.last;
     } else if (k == 'mtgox') {
-        return {
-            stat: v.data && v.data.last ? 'ok' : 'error',
-            last: '$ ' + v.data.last.value
-        };
+        result.stat = v.data && v.data.last ? 'ok' : 'error';
+        result.last = v.data.last.value;
     } else if (k == 'fxbtc') {
-        return {
-            stat: v.result ? 'ok' : 'error',
-            last: '¥ ' + v.ticker.ask
-        };
+        result.stat = v.result ? 'ok' : 'error';
+        result.last = v.ticker.ask;
     } else if (k == 'okcoin') {
-        return {
-            stat: v.ticker ? 'ok' : 'error',
-            last: '¥ ' + v.ticker.last
-        };
+        result.stat = v.ticker ? 'ok' : 'error';
+        result.last = v.ticker.last;
     } else if (k == 'btctrade') {
-        return {
-            stat: v.last ? 'ok' : 'error',
-            last: '¥ ' + v.last
-        }
+        result.stat = v.last ? 'ok' : 'error';
+        result.last = v.last;
     } else if (k == 'chbtc') {
-        return {
-            stat: v.ticker ? 'ok' : 'error',
-            last: '¥ ' + v.ticker.last
-        }
+        result.stat = v.ticker ? 'ok' : 'error';
+        result.last = v.ticker.last;
     } else if (k == 'futures796') {
-        return {
-            stat: v.ticker ? 'ok' : 'error',
-            last: '$ ' + v.ticker.last
-        }
+        result.stat = v.ticker ? 'ok' : 'error';
+        result.last = v.ticker.last;
     } else if (k == 'btc100') {
-        return {
-            stat: v.ticker ? 'ok' : 'error',
-            last: '¥ ' + v.ticker.last
-        }
+        result.stat = v.ticker ? 'ok' : 'error';
+        result.last = v.ticker.last;
     } else if (k == 'btce') {
-        return {
-            stat: v.ticker && v.ticker.last ? 'ok' : 'error',
-            last: '$ ' + v.ticker.last
-        }
+        result.stat = v.ticker && v.ticker.last ? 'ok' : 'error';
+        result.last = v.ticker.last;
     }
-    return v;
+    return result;
 };
 
-var label = function(key, data) {
-    var str = ' ';
-    if (data.last) {
-        if (data.stat == 'ok') {
-            str += colors.green(data.last) + ' '
-        } else {
-            str += colors.red('request fail') + ' '
-        }
-    }
-    str += colors.grey(moment().format('HH:mm'));
-    return str;
-}
-
-var price = function(menu, item, index, autorefresh) {
-    bitcoin.price(autorefresh ? false : item.name, function(err, result) {
-        if (!err) {
-            var data = wash(item.name, autorefresh ? result[item.name][0] : result), l;
-            if (data) {
-                l = label(item.name, data);
-            } else {
-                l = colors.red(' request fail');
-            }
-            menu._update(index, l);
-        } else {
-            menu._update(index, colors.red(' request fail'));
-        }
-    });
-}
-
-var update = function(menu, within) {
-    _.each(menu.exchangers, function(item, index) {
-        within(item, index);
-        price(menu, item, index);
-    });
-}
-
-var repeat = function(length, s) {
-    var f = s;
-    for (var i = length - 1; i >= 0; i--) {
-        f += s;
-    };
-    return f;
-}
-
-var align = function(s, max) {
-    if (s && s.length < max) s += repeat(max - s.length, ' ');
-    return s;
-}
-
-var init = function(menu) {
-    update(menu, function(item) {
-        menu.add(item.url, align(item.name, 13) + colors.yellow(' loading...'));
-    });
-    menu.start();
-}
-
 module.exports = function() {
+
     var menu = new List({
         maker: '\033[36m› \033[0m',
         markerLength: 2
     });
-    menu._update = function(index, label) {
-        var exchanger = this.exchangers[index];
-        var prefix = exchanger.autorefresh ? '[a]' : '';
-        this.at(index).label = align(prefix + exchanger.name, 13) + label;
+
+    menu._wash = wash;
+
+    menu._configs = {
+        autorefresh: 10000
+    }
+
+    menu._label = function(key, data) {
+        var label = ' ';
+        label += (data.last && data.stat == 'ok') ? colors.green(data.currency + ' ' + parseInt(data.last, 10).toFixed(2)) : colors.red('request fail');
+        label += ' ';
+        label += colors.grey(moment().format('HH:mm'));
+        return label;
+    };
+
+    menu._fetchPrices = function(item, index, autorefresh) {
+        var self = this;
+        bitcoin.price(autorefresh ? false : item.name, function(err, result) {
+            if (!err) {
+                var data = self._wash(item.name, autorefresh ? result[item.name][0] : result),
+                    label = data ? self._label(item.name, data) : colors.red(' request fail');
+                self._relabel(index, label);
+            } else {
+                self._relabel(index, colors.red(' request fail'));
+            }
+        });
+    }
+
+    menu._align = function(s, max) {
+        var repeat = function(length, s) {
+            var f = s;
+            for (var i = length - 1; i >= 0; i--) {
+                f += s;
+            };
+            return f;
+        };
+        if (s && s.length < max) s += repeat(max - s.length, ' ');
+        return s;
+    }
+
+    menu._relabel = function(index, label) {
+        var exchanger = this.exchangers[index],
+            afterfix = exchanger.autorefresh ? ' [Auto Refresh / ' + this._configs.autorefresh / 1000 + 's ]' : '';
+        this.at(index).label = this._align(exchanger.name, 13) + label + colors.grey(afterfix);
         this.draw();
     };
-    menu.exchangers = bitcoin.exchangers(sdk);
+
+    menu._clear = function() {
+        _.each(this.exchangers, function(item, index) {
+            item.autorefresh = false;
+            if (item.refreshInterval) {
+                clearInterval(item.refreshInterval);
+                delete item.refreshInterval;
+            }
+        });
+    };
+
+    menu._updateAll = function(doing) {
+        var self = this;
+        _.each(this.exchangers, function(item, index) {
+            doing(item, index);
+            self._fetchPrices(item, index);
+        });
+    };
+
+    menu._update = function() {
+        var self = this;
+        self._updateAll(function(item, index) {
+            self._relabel(index, colors.yellow(' updating...'))
+        });
+    };
+
+    menu._init = function() {
+        var self = this;
+        self._updateAll(function(item) {
+            self.add(item.site, self._align(item.name, 13) + colors.yellow(' loading...'));
+        });
+        self.start();
+    };
+
+    menu.exchangers = exchangers.list();
+
     menu.on('keypress', function(key, item) {
-        if (key.name == 'return') {
-            // Clear all autorefreshes
-            _.each(menu.exchangers, function(item, index) {
-                item.autorefresh = false;
-                if (item.refreshInterval) {
-                    clearInterval(item.refreshInterval);
-                    delete item.refreshInterval;
-                }
-            });
-
-            update(menu, function(item, index) {
-                menu._update(index, colors.yellow('updating...'))
-            });
-        } else if (key.name == 'g') {
-            exec('open ' + item);
-        } else if (key.name == 'a') {
-            _.each(menu.items, function(item, index) {
-                if (item.id === menu.selected) {
-                    var exchanger = menu.exchangers[index];
-                    var refresh = function() {
-                        menu._update(index, colors.yellow('updating...'))
-                        price(menu, exchanger, index, true);
+        if (key) {
+            if (key.name == 'return') {
+                menu._clear();
+                menu._update();
+            } else if (key.name == 'a') {
+                _.each(menu.items, function(item, index) {
+                    if (item.id === menu.selected) {
+                        var exchanger = menu.exchangers[index];
+                        var refresh = function() {
+                            menu._relabel(index, colors.yellow(' updating...'))
+                            menu._fetchPrices(exchanger, index, true);
+                        };
+                        refresh();
+                        if (exchanger.autorefresh) {
+                            clearInterval(exchanger.refreshInterval);
+                            delete exchanger.refreshInterval;
+                        } else {
+                            exchanger.refreshInterval = setInterval(refresh, menu._configs.autorefresh);
+                        }
+                        exchanger.autorefresh = !exchanger.autorefresh;
                     }
-
-                    refresh();
-                    if (exchanger.autorefresh) {
-                        clearInterval(exchanger.refreshInterval);
-                        delete exchanger.refreshInterval;
-                    } else {
-                        exchanger.refreshInterval = setInterval(refresh, 10000);
-                    }
-                    exchanger.autorefresh = !exchanger.autorefresh;
-                }
-            });
-            menu.draw();
+                });
+                menu.draw();
+            } else if (key.name == 'g') {
+                exec('open ' + item);
+            } else if (key.name == 'q') {
+                menu._clear();
+                menu.stop();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     });
+
     menu.on('empty', function() {
         menu.stop();
     });
-    init(menu);
+
+    menu._init();
 }

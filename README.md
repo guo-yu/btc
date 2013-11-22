@@ -1,6 +1,6 @@
 ## ![logo](http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg) btc ![npm](https://badge.fury.io/js/btc.png)
 
-a bitcoin price watcher for geeks
+a command-line bitcoin price board for geeks
 
 ![screenshot](http://ww3.sinaimg.cn/large/61ff0de3gw1easzjzw8d6j20hn0ar74z.jpg)
 
@@ -15,12 +15,13 @@ just run `btc` , prices board will show
 $ btc 
 ````
 #### Shortcuts
-btc cli provides some useful shotcuts for you:
+btc cli provides some useful shortcuts for you:
 ````
 [enter]  ->  refresh prices as you wish
 [g]      ->  go to current exchange market
 [a]      ->  autorefresh the current exchange market every 10 seconds, 
              press [a] to cancel or [enter] to cancel all
+[q]      ->  quit
 ````
 
 ### Example
@@ -38,6 +39,14 @@ btc.price('btcchina', function(err, prices){
 });
 ````
 
+### Add your coin's API
+please feel free to add new coin's api:
+````
+$ git clone https://github.com/turingou/btc.git && cd btc
+$ vi ./libs/exchangers.js
+````
+make sure every api has its unique `url` `site` and fill param `currency`.
+
 ### API
 check this file: `index.js`
 
@@ -46,6 +55,13 @@ btc supports exchanges below:
 - [btcchina](https://www.btcchina.com/): the bitcoin largest exchanger in China
 - [mtgox](https://www.mtgox.com/)
 - [bitstamp](https://www.bitstamp.net/)
+- [btce](https://btc-e.com/)
+- [futures796](http://bitcoinwisdom.com/markets/796/futures)
+- [okcoin](https://www.okcoin.com/)
+- [chbtc](https://www.chbtc.com/)
+- [fxbtc](http://www.fxbtc.com/)
+- [btctrade](http://www.btctrade.com/)
+- [btc100](https://btc100.org/)
 
 ### Contributing
 - Fork this repo
