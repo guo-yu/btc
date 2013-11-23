@@ -1,6 +1,6 @@
 {
   "name": "btc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "a command-line bitcoin price board for geeks",
   "logo": "http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg",
   "main": "index.js",
