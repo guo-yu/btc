@@ -161,8 +161,7 @@ module.exports = function() {
             } else if (key.name == 'g') {
                 exec('open ' + item);
             } else if (key.name == 'q') {
-                menu._clear();
-                menu.stop();
+                process.exit();
             } else {
                 return false;
             }
