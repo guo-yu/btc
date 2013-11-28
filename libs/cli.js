@@ -7,7 +7,8 @@ var _ = require('underscore'),
     exec = require('child_process').exec,
     sdk = require('./sdk'),
     bitcoin = require('./bitcoin'),
-    exchangers = require('./exchangers');
+    exchangers = require('./exchangers'),
+    open = require('open');
 
 var wash = function(k, v) {
     var result = v;
@@ -159,7 +160,7 @@ module.exports = function() {
                 });
                 menu.draw();
             } else if (key.name == 'g') {
-                exec('open ' + item);
+                open(item);
             } else if (key.name == 'q') {
                 process.exit();
             } else {
