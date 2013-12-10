@@ -24,7 +24,7 @@ var exchanger = {
     coinbase: {
         currency: '$',
         site: 'https://coinbase.com/',
-        url: 'http://coinbase.com/api/v1/prices/spot_rate'
+        url: 'https://coinbase.com/api/v1/prices/spot_rate'
     },
     btcchina: {
         currency: '¥',
