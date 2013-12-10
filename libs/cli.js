@@ -43,6 +43,9 @@ var wash = function(k, v) {
     } else if (k == 'btce') {
         result.stat = v.ticker && v.ticker.last ? 'ok' : 'error';
         result.last = v.ticker ? v.ticker.last : null;
+    } else if (k == 'coinbase') {
+        result.stat = v.amount ? 'ok' : 'error';
+        result.last = v.amount ? v.amount : null;
     }
     return result;
 };

@@ -21,6 +21,11 @@ var exchanger = {
         site: 'http://bitcoinwisdom.com/markets/796/futures',
         url: 'http://www.btc123.com/e/interfaces/tickers.php?type=796futuresTicker&suffix=0.38433733163401484'
     },
+    coinbase: {
+        currency: '$',
+        site: 'https://coinbase.com/',
+        url: 'https://coinbase.com/api/v1/prices/spot_rate'
+    },
     btcchina: {
         currency: '¥',
         site: 'https://www.btcchina.com/',

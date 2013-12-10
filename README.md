@@ -57,6 +57,7 @@ btc supports exchanges below:
 - [bitstamp](https://www.bitstamp.net/)
 - [btce](https://btc-e.com/)
 - [futures796](http://bitcoinwisdom.com/markets/796/futures)
+- [coinbase](https://coinbase.com)
 - [okcoin](https://www.okcoin.com/)
 - [chbtc](https://www.chbtc.com/)
 - [fxbtc](http://www.fxbtc.com/)
