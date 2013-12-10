@@ -44,8 +44,8 @@ var wash = function(k, v) {
         result.stat = v.ticker && v.ticker.last ? 'ok' : 'error';
         result.last = v.ticker ? v.ticker.last : null;
     } else if (k == 'coinbase') {
-        result.stat = v.ticker && v.ticker.amount ? 'ok' : 'error';
-        result.last = v.ticker ? v.ticker.amount : null;
+        result.stat = v.amount ? 'ok' : 'error';
+        result.last = v.amount ? v.amount : null;
     }
     return result;
 };
