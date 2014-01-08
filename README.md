@@ -89,6 +89,10 @@ btc supports exchanges below:
 - Make sure your features are fully tested
 - Open a pull request, and enjoy <3
 
+### Changelog
+
+check out [./changelog.md](./changelog.md)
+
 ### MIT license
 Copyright (c) 2013 turing &lt;o.u.turing@gmail.com&gt;
 
