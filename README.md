@@ -64,6 +64,22 @@ btc supports exchanges below:
 - [btctrade](http://www.btctrade.com/)
 - [btc100](https://btc100.org/)
 
+### Contributors
+```
+ project  : btc
+ repo age : 7 weeks
+ active   : 12 days
+ commits  : 24
+ files    : 11
+ authors  :
+    14  Guo Yu                  58.3%
+     4  Connor Keenan           16.7%
+     2  Aleksander Gregorka     8.3%
+     2  Glenn Murray            8.3%
+     1  Andrew Seidl            4.2%
+     1  ekousp                  4.2%
+```
+
 ### Contributing
 - Fork this repo
 - Clone your repo
@@ -93,7 +109,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
 
 ---
 ![docor](https://cdn1.iconfinder.com/data/icons/windows8_icons_iconpharm/26/doctor.png)
