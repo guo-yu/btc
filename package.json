@@ -1,6 +1,6 @@
 {
   "name": "btc",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a command-line bitcoin price board for geeks",
   "logo": "http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg",
   "main": "index.js",
@@ -22,13 +22,13 @@
     "url": "https://github.com/turingou/btc/issues"
   },
   "dependencies": {
-    "term-list": "*",
     "sdk": "*",
+    "open": "*",
     "async": "*",
-    "underscore": "*",
-    "consoler": "*",
     "colors": "*",
     "moment": "*",
-    "open": "*"
+    "consoler": "*",
+    "underscore": "*",
+    "term-list-enhanced": "*"
   }
 }
