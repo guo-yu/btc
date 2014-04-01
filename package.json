@@ -2,7 +2,6 @@
   "name": "btc",
   "version": "0.0.5",
   "description": "a command-line bitcoin price board for geeks",
-  "logo": "http://ww2.sinaimg.cn/large/61ff0de3gw1easknn74dvj2019019t8i.jpg",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +13,11 @@
   },
   "keywords": [
     "btc",
-    "bitcoin"
+    "bitcoin",
+    "ltc",
+    "litecoin",
+    "coin",
+    "coinbase"
   ],
   "author": "turing <o.u.turing@gmail.com>",
   "license": "MIT",
@@ -22,7 +25,7 @@
     "url": "https://github.com/turingou/btc/issues"
   },
   "dependencies": {
-    "sdk": "*",
+    "sdk": "git://github.com/turingou/sdk.git",
     "open": "*",
     "async": "*",
     "colors": "*",

@@ -1,6 +1,4 @@
-var _ = require('underscore');
-
-exports.map = {
+module.exports = {
   bitstamp: {
     currency: '$',
     site: 'https://www.bitstamp.net/',
@@ -52,10 +50,3 @@ exports.map = {
     url: 'http://www.btc123.com/e/interfaces/tickers.php?type=btc100Ticker&suffix=0.16103304247371852'
   }
 };
-
-exports.list = (function() {
-  return _.map(this.map, function(v, k) {
-    v.name = k;
-    return v;
-  });
-})();

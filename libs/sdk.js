@@ -1,10 +1,4 @@
-var Sdk = require('sdk');
-var exchangers = require('./exchangers');
+var SDK = require('sdk');
+var exchanges = require('./exchanges');
 
-module.exports = sdk()
-
-function sdk() {
-  var settings = {}
-  settings.server = ''
-  return new Sdk(exchangers.map, settings)
-}
+module.exports = new SDK('', exchanges);
