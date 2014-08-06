@@ -53,7 +53,6 @@ check this file: `index.js`
 btc supports exchanges below:
 
 - [btcchina](https://www.btcchina.com/): the bitcoin largest exchanger in China
-- [mtgox](https://www.mtgox.com/)
 - [bitstamp](https://www.bitstamp.net/)
 - [btce](https://btc-e.com/)
 - [futures796](http://bitcoinwisdom.com/markets/796/futures)
@@ -88,10 +87,6 @@ btc supports exchanges below:
 - Feel free to add your features
 - Make sure your features are fully tested
 - Open a pull request, and enjoy <3
-
-### Changelog
-
-check out [./changelog.md](./changelog.md)
 
 ### MIT license
 Copyright (c) 2013 turing &lt;o.u.turing@gmail.com&gt;
